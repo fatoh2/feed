@@ -14,6 +14,8 @@ import {
   organizationState,
   perpMarketSnapshots,
   perpPositions,
+  pointsTransactions,
+  stockPrices,
   tradingFees,
   users,
 } from '@feed/db';
@@ -101,6 +103,12 @@ function open(userId: string, ticker: string, leverage: number) {
 
 afterAll(async () => {
   await dbWrite.delete(tradingFees).where(inArray(tradingFees.userId, userIds));
+  await dbWrite
+    .delete(pointsTransactions)
+    .where(inArray(pointsTransactions.userId, userIds));
+  await dbWrite
+    .delete(stockPrices)
+    .where(inArray(stockPrices.organizationId, tickers));
   await dbWrite
     .delete(balanceTransactions)
     .where(inArray(balanceTransactions.userId, userIds));
